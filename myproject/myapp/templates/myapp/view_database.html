@@ -1,0 +1,23 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+  <h2>Generated Files Database</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in generated_files %}
+        <tr>
+          <td>{{ file.name }}</td>
+          <td><a href="{% url 'download_file' file.id %}">Download</a></td>
+          <td><a href="{% url 'delete_file' file.id %}">Delete</a></td>
+          
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

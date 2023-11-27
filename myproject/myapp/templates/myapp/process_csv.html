@@ -1,0 +1,49 @@
+<!-- myapp/templates/process_csv.html -->
+{%extends "myapp/base.html" %}
+{%block content %}
+    <h2>CSV Processing</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="csv_file">Upload CSV File:</label>
+        <input type="file" name="csv_file" required>
+        <br>
+        <label for="copies">Number of Copies:</label>
+        <input type="number" name="copies" value="1" required>
+        <br>
+        <label for="iterations">Number of Iterations:</label>
+        <input type="number" name="iterations" id="iterations" required onchange="updateOrderFields()">
+        <br>
+        <div id="order-fields"></div>
+        <br>
+        <button type="submit">Process CSV</button>
+    </form>
+
+    <script>
+        function updateOrderFields() {
+            var iterations = document.getElementById("iterations").value;
+            var orderFieldsDiv = document.getElementById("order-fields");
+
+            orderFieldsDiv.innerHTML = ""; // Clear existing fields
+
+            for (var i = 0; i < iterations; i++) {
+                var label = document.createElement("label");
+                label.setAttribute("for", "steps_" + i);
+                label.innerHTML = "Steps for Iteration " + (i + 1) + ":";
+                
+                var input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("name", "steps_" + i);
+                input.required = true;
+
+                var br = document.createElement("br");
+
+                orderFieldsDiv.appendChild(label);
+                orderFieldsDiv.appendChild(input);
+                orderFieldsDiv.appendChild(br);
+            }
+        }
+
+        // Call the function initially to set up the order fields based on the default iteration value
+        updateOrderFields();
+    </script>
+{% endblock content %}
